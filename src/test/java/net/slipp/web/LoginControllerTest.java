@@ -1,8 +1,7 @@
 package net.slipp.web;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -51,14 +50,14 @@ public class LoginControllerTest {
 	public void login_not_found_user() throws Exception {
 		ResponseEntity<String> response = login(testUser.getUserId() + "1", testUser.getPassword());
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù. ´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä."), is(true));
+		assertThat(response.getBody().contains("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”."), is(true));
 	}
 	
 	@Test
 	public void login_mismatch_password() throws Exception {
 		ResponseEntity<String> response = login(testUser.getUserId(), testUser.getPassword() + "1");
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù. ´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä."), is(true));
+		assertThat(response.getBody().contains("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”."), is(true));
 	}
 	
 	private ResponseEntity<String> login(String userId, String password) {

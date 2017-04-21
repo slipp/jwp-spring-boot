@@ -59,7 +59,7 @@ public class UserControllerTest {
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("userId", "javajigi");
         params.add("password", "pass");
-        params.add("name", "�缺");
+        params.add("name", "재성");
         params.add("email", "javajigi@slipp.net");
         
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
@@ -94,7 +94,7 @@ public class UserControllerTest {
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("_method", "put");
         params.add("password", "pass2");
-        params.add("name", "�缺2");
+        params.add("name", "재성2");
         params.add("email", "javajigi2@slipp.net");
         
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
