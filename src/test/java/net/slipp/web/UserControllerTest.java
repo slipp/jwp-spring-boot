@@ -67,6 +67,7 @@ public class UserControllerTest {
         
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
 		log.debug("created user : {}", userRepository.findByUserId("javajigi"));
+		assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
 	}
 	
 	@Test
@@ -99,6 +100,7 @@ public class UserControllerTest {
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
 		ResponseEntity<String> response = template.postForEntity(String.format("/users/%d", testUser.getId()), request, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
+		assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
 	}
 	
 	@After

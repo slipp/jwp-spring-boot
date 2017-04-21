@@ -77,6 +77,10 @@ public class User {
 		this.name = target.name;
 		this.email = target.email;
 	}
+	
+	public boolean matchPassword(String password) {
+		return this.password.equals(password);
+	}
 
 	@Override
 	public String toString() {
