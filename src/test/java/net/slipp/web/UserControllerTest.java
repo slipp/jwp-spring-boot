@@ -1,10 +1,12 @@
 package net.slipp.web;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -34,6 +36,13 @@ public class UserControllerTest {
 	
 	@Autowired private UserRepository userRepository;
 	
+	private User testUser;
+	
+	@Before
+	public void setup() {
+		testUser = userRepository.save(new User("sanjigi", "password", "name", "javajigi@slipp.net"));
+	}
+	
 	@Test
 	public void createForm() throws Exception {
 		ResponseEntity<String> response = template.getForEntity("/users/form", String.class);
@@ -62,30 +71,21 @@ public class UserControllerTest {
 	
 	@Test
 	public void list() throws Exception {
-		User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
-		userRepository.save(user);
-		
 		ResponseEntity<String> response = template.getForEntity("/users", String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		log.debug("body : {}", response.getBody());
-		assertThat(response.getBody().contains("javajigi@slipp.net"), is(true));
+		assertThat(response.getBody().contains(testUser.getEmail()), is(true));
 	}
 	
 	@Test
 	public void updateForm() throws Exception {
-		User user = new User("updateUser", "password", "name", "javajigi@slipp.net");
-		User savedUser = userRepository.save(user);
-		
-		ResponseEntity<String> response = template.getForEntity(String.format("/users/%d/form", savedUser.getId()), String.class);
+		ResponseEntity<String> response = template.getForEntity(String.format("/users/%d/form", testUser.getId()), String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains("javajigi@slipp.net"), is(true));
+		assertThat(response.getBody().contains(testUser.getEmail()), is(true));
 	}
 	
 	@Test
 	public void update() throws Exception {
-		User user = new User("updateUser", "password", "name", "javajigi@slipp.net");
-		User savedUser = userRepository.save(user);
-		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -97,7 +97,12 @@ public class UserControllerTest {
         params.add("email", "javajigi2@slipp.net");
         
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
-		ResponseEntity<String> response = template.postForEntity(String.format("/users/%d", savedUser.getId()), request, String.class);
+		ResponseEntity<String> response = template.postForEntity(String.format("/users/%d", testUser.getId()), request, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
+	}
+	
+	@After
+	public void tearDown() {
+		userRepository.delete(testUser);
 	}
 }
