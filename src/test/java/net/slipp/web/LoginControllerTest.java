@@ -1,36 +1,23 @@
 package net.slipp.web;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
+import support.test.AbstractIntegrationTest;
+import support.test.HtmlFormDataBuilder;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class LoginControllerTest {
-	@Autowired private TestRestTemplate template;
-	
+public class LoginControllerTest extends AbstractIntegrationTest {
 	@Autowired private UserRepository userRepository;
 	
 	private User testUser;
@@ -51,26 +38,22 @@ public class LoginControllerTest {
 	public void login_not_found_user() throws Exception {
 		ResponseEntity<String> response = login(testUser.getUserId() + "1", testUser.getPassword());
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù. ´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä."), is(true));
+		assertThat(response.getBody().contains("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”."), is(true));
 	}
 	
 	@Test
 	public void login_mismatch_password() throws Exception {
 		ResponseEntity<String> response = login(testUser.getUserId(), testUser.getPassword() + "1");
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains("¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²¸³´Ï´Ù. ´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä."), is(true));
+		assertThat(response.getBody().contains("ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦½ë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”."), is(true));
 	}
 	
 	private ResponseEntity<String> login(String userId, String password) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        
-        MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        params.add("userId", userId);
-        params.add("password", password);
-        
-        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<MultiValueMap<String, Object>>(params, headers);
+		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+				.urlEncodedForm()
+				.addParameter("userId", userId)
+				.addParameter("password", password)
+				.build();
         ResponseEntity<String> response = template.postForEntity("/login", request, String.class);
 		return response;
 	}
