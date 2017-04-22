@@ -53,6 +53,7 @@ public class UserController {
 	public String update(@PathVariable long id, User target) {
 		User original = userRepository.findOne(id);
 		original.update(target);
+		userRepository.save(original);
 		return "redirect:/users";
 	}
 	

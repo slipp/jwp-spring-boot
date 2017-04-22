@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import net.slipp.domain.User;
@@ -13,6 +14,11 @@ import net.slipp.service.UserService;
 public class LoginController {
 	@Autowired
 	private UserService userService;
+	
+	@GetMapping("/login")
+	public String form() {
+		return "/user/login";
+	}
 	
 	@PostMapping("/login")
 	public String login(String userId, String password, HttpSession session) {
