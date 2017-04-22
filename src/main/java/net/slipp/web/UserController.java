@@ -2,6 +2,8 @@ package net.slipp.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import net.slipp.UnAuthorizedException;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
+import net.slipp.security.HttpSessionUtils;
 
 @Controller
 @RequestMapping("/users")
@@ -44,13 +48,21 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable long id, Model model) {
+	public String updateForm(@PathVariable long id, Model model, HttpSession session) {
+		if (!HttpSessionUtils.isLoginUser(session)) {
+			throw new UnAuthorizedException();
+		}
+		
 		model.addAttribute("user", userRepository.findOne(id));
 		return "/user/updateForm";
 	}
 	
 	@PutMapping("/{id}")
-	public String update(@PathVariable long id, User target) {
+	public String update(@PathVariable long id, User target, HttpSession session) {
+		if (!HttpSessionUtils.isLoginUser(session)) {
+			throw new UnAuthorizedException();
+		}
+		
 		User original = userRepository.findOne(id);
 		original.update(target);
 		userRepository.save(original);
