@@ -31,9 +31,10 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 	
 	@Test
 	public void create() throws Exception {
+		String userId = "java";
 		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
 				.urlEncodedForm()
-		        .addParameter("userId", "javajigi")
+		        .addParameter("userId", userId)
 				.addParameter("password", "pass")
 				.addParameter("name", "재성")
 				.addParameter("email", "javajigi@slipp.net")
@@ -42,7 +43,7 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 		ResponseEntity<String> response = template.postForEntity("/users", request, String.class);
         
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-		assertNotNull(userRepository.findByUserId("javajigi"));
+		assertNotNull(userRepository.findByUserId(userId));
 		assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
 	}
 	

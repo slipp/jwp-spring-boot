@@ -1,6 +1,5 @@
 package support.test;
 
-import org.junit.After;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -18,12 +17,7 @@ public abstract class BasicAuthIntegrationTest extends IntegrationTest {
 	
 	@Before
 	public void setup() {
-		loginUser = userRepository.save(new User("sanjigi", "password", "name", "javajigi@slipp.net"));
+		loginUser = userRepository.findByUserId("javajigi").get();
 		basicAuthTemplate = template.withBasicAuth(loginUser.getUserId(), loginUser.getPassword());
-	}
-	
-	@After
-	public void tearDown() {
-		userRepository.delete(loginUser);
 	}
 }

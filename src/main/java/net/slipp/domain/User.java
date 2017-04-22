@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import net.slipp.UnAuthorizedException;
+
 @Entity
 public class User {
+	public static final GuestUser GUEST_USER = new GuestUser();
+	
 	@Id @GeneratedValue
 	private long id;
 	
@@ -72,7 +76,15 @@ public class User {
 		this.email = email;
 	}
 	
-	public void update(User target) {
+	private boolean matchUserId(String userId) {
+		return this.userId.equals(userId);
+	}
+	
+	public void update(User loginUser, User target) {
+		if (!matchUserId(loginUser.getUserId())) {
+			throw new UnAuthorizedException();
+		}
+		
 		if (!matchPassword(password)) {
 			return;
 		}
@@ -82,6 +94,17 @@ public class User {
 	
 	public boolean matchPassword(String password) {
 		return this.password.equals(password);
+	}
+	
+	public boolean isGuestUser() {
+		return false;
+	}
+	
+    private static class GuestUser extends User {
+		@Override
+		public boolean isGuestUser() {
+			return true;
+		}
 	}
 	
 	@Override
