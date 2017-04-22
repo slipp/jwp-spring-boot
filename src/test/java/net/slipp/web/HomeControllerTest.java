@@ -4,21 +4,27 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import support.test.AbstractIntegrationTest;
+import support.test.BasicAuthIntegrationTest;
 
-public class HomeControllerTest extends AbstractIntegrationTest {
-	private static final Logger log = LoggerFactory.getLogger(HomeControllerTest.class);
-
+public class HomeControllerTest extends BasicAuthIntegrationTest {
 	@Test
-	public void home() {
+	public void home_logout() {
 		ResponseEntity<String> response = template.getForEntity("/", String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		log.debug("body : {}", response.getBody());
+		String body = response.getBody();
+		assertTrue(body.contains("회원가입") && body.contains("로그인"));
+		assertFalse(body.contains("로그아웃") || body.contains("개인정보수정"));
 	}
 
+	@Test
+	public void home_login() {
+		ResponseEntity<String> response = basicAuthTemplate.getForEntity("/", String.class);
+		assertThat(response.getStatusCode(), is(HttpStatus.OK));
+		String body = response.getBody();
+		assertFalse(body.contains("회원가입") || body.contains("로그인"));
+		assertTrue(body.contains("로그아웃") && body.contains("개인정보수정"));
+	}
 }
