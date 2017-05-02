@@ -8,6 +8,8 @@ import org.junit.Test;
 import net.slipp.UnAuthorizedException;
 
 public class UserTest {
+	public static final User TEST_USER = new User("testuser", "password", "name", "javajigi@slipp.net");
+	
 	private User newUser(String userId) {
 		return newUser(userId, "password");
 	}
