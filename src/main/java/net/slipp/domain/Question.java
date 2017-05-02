@@ -1,6 +1,7 @@
 package net.slipp.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,8 +77,11 @@ public class Question {
 		return writer;
 	}
 
-	public LocalDateTime getCreateDate() {
-		return createDate;
+	public String getFormattedCreateDate() {
+		if (createDate == null) {
+			return "";
+		}
+		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 	}
 
 	public void writeBy(User loginUser) {
