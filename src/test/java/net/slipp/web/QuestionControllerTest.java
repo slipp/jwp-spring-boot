@@ -49,7 +49,7 @@ public class QuestionControllerTest extends BasicAuthIntegrationTest {
 	public void show() throws Exception {
 		Question savedQuestion = questionRepository.save(createByLoginUser(loginUser));
 
-		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.toUrl(), String.class);
+		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.generateUrl(), String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertTrue(response.getBody().contains(savedQuestion.getTitle()));
 		assertTrue(response.getBody().contains(savedQuestion.getContents()));
@@ -59,7 +59,7 @@ public class QuestionControllerTest extends BasicAuthIntegrationTest {
 	public void updateForm_글쓴이() throws Exception {
 		Question savedQuestion = questionRepository.save(createByLoginUser(loginUser));
 		
-		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.toUrl() + "/form", String.class);
+		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.generateUrl() + "/form", String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 		assertTrue(response.getBody().contains(savedQuestion.getTitle()));
 		assertTrue(response.getBody().contains(savedQuestion.getContents()));
@@ -69,7 +69,7 @@ public class QuestionControllerTest extends BasicAuthIntegrationTest {
 	public void updateForm_다른_사람이_쓴_글() throws Exception {
 		Question savedQuestion = questionRepository.save(createByLoginUser(findByUserId("sanjigi")));
 		
-		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.toUrl() + "/form", String.class);
+		ResponseEntity<String> response = basicAuthTemplate.getForEntity(savedQuestion.generateUrl() + "/form", String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
 	}
 	
@@ -86,7 +86,7 @@ public class QuestionControllerTest extends BasicAuthIntegrationTest {
 				.addParameter("title", title)
 				.addParameter("contents", contents)
 				.build();
-		ResponseEntity<String> response = basicAuthTemplate.postForEntity(savedQuestion.toUrl(), request, String.class);
+		ResponseEntity<String> response = basicAuthTemplate.postForEntity(savedQuestion.generateUrl(), request, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
 		
 		Question updatedQuestion = questionRepository.findOne(savedQuestion.getId());
@@ -104,7 +104,7 @@ public class QuestionControllerTest extends BasicAuthIntegrationTest {
 				.addParameter("title", "TDD는 의미 없지 않나?")
 				.addParameter("contents", "맞아. TDD는 의심을 가지고 지켜봐야해.")
 				.build();
-		ResponseEntity<String> response = basicAuthTemplate.postForEntity(savedQuestion.toUrl(), request, String.class);
+		ResponseEntity<String> response = basicAuthTemplate.postForEntity(savedQuestion.generateUrl(), request, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
 	}
 }

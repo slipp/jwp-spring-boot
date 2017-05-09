@@ -53,6 +53,6 @@ public class QuestionController {
 	@PutMapping("/{id}")
 	public String update(@LoginUser User loginUser, @PathVariable long id, Question question) {
 		Question updatedQuestion = qnaService.update(loginUser, id, question);
-		return "redirect:" + updatedQuestion.toUrl();
+		return "redirect:" + updatedQuestion.generateUrl();
 	}
 }

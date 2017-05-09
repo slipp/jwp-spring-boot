@@ -18,9 +18,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import net.slipp.UnAuthorizedException;
+import support.domain.UrlGeneratable;
 
 @Entity
-public class Question {
+public class Question implements UrlGeneratable {
 	@Id
 	@GeneratedValue
 	private long id;
@@ -108,7 +109,8 @@ public class Question {
 		this.contents = updatedQuestion.contents;
 	}
 	
-	public String toUrl() {
+	@Override
+	public String generateUrl() {
 		return String.format("/questions/%d", this.id);
 	}
 	
