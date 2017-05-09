@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import net.slipp.domain.Answer;
+import net.slipp.domain.AnswerRepository;
 import net.slipp.domain.Question;
 import net.slipp.domain.QuestionRepository;
 import net.slipp.domain.User;
@@ -19,6 +20,9 @@ public class QnaService {
 	
 	@Resource(name = "questionRepository")
 	private QuestionRepository questionRepository;
+	
+	@Resource(name = "answerRepository")
+	private AnswerRepository answerRepository;
 
 	public void create(User loginUser, Question question) {
 		question.writeBy(loginUser);
@@ -45,5 +49,12 @@ public class QnaService {
 		Answer answer = new Answer(loginUser, contents);
 		question.addAnswer(answer);
 		return questionRepository.save(question);
+	}
+
+	public Answer deleteAnswer(User loginUser, long id) {
+		Answer answer = answerRepository.findOne(id);
+		answer.deletedBy(loginUser);
+		answerRepository.delete(answer);
+		return answer;
 	}
 }
