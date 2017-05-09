@@ -1,8 +1,5 @@
 package net.slipp.domain;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -24,22 +21,12 @@ public class Answer extends AbstractEntity {
 	@Lob
 	private String contents;
 	
-	private LocalDateTime createDate;
-	
 	public Answer() {
 	}
 	
 	public Answer(User writer, String contents) {
 		this.writer = writer;
 		this.contents = contents;
-		this.createDate = LocalDateTime.now();
-	}
-	
-	public String getFormattedCreateDate() {
-		if (createDate == null) {
-			return "";
-		}
-		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 	}
 	
 	public User getWriter() {
@@ -60,7 +47,6 @@ public class Answer extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + ", createDate=" + createDate
-				+ "]";
+		return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
 	}
 }

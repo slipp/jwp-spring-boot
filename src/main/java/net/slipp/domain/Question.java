@@ -1,7 +1,5 @@
 package net.slipp.domain;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +33,12 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	@OrderBy("id ASC")
 	private List<Answer> answers = new ArrayList<>();
 	
-	private LocalDateTime createDate;
-	
 	public Question() {
-		this.createDate = LocalDateTime.now();
 	}
 	
 	public Question(String title, String contents) {
 		this.title = title;
 		this.contents = contents;
-		this.createDate = LocalDateTime.now();
 	}
 	
 	public String getTitle() {
@@ -65,13 +59,6 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	
 	public User getWriter() {
 		return writer;
-	}
-
-	public String getFormattedCreateDate() {
-		if (createDate == null) {
-			return "";
-		}
-		return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
 	}
 
 	public void writeBy(User loginUser) {
