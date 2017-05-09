@@ -1,5 +1,7 @@
 package net.slipp.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -32,6 +34,10 @@ public class QnaService {
 		Question question = questionRepository.findOne(id);
 		question.update(loginUser, updatedQuestion);
 		return questionRepository.save(question);
+	}
+	
+	public List<Question> findAll() {
+		return questionRepository.findAll();
 	}
 
 	public Question addAnswer(User loginUser, long questionId, String contents) {
