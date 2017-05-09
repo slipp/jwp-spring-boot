@@ -9,8 +9,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -18,14 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import net.slipp.UnAuthorizedException;
+import support.domain.AbstractEntity;
 import support.domain.UrlGeneratable;
 
 @Entity
-public class Question implements UrlGeneratable {
-	@Id
-	@GeneratedValue
-	private long id;
-
+public class Question extends AbstractEntity implements UrlGeneratable {
 	@Column(length = 100, nullable = false)
 	private String title;
 
@@ -52,14 +47,6 @@ public class Question implements UrlGeneratable {
 		this.createDate = LocalDateTime.now();
 	}
 	
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -111,11 +98,11 @@ public class Question implements UrlGeneratable {
 	
 	@Override
 	public String generateUrl() {
-		return String.format("/questions/%d", this.id);
+		return String.format("/questions/%d", getId());
 	}
 	
 	@Override
 	public String toString() {
-		return "Question [id=" + id + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+		return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
 	}
 }

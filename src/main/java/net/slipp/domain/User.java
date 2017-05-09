@@ -2,17 +2,13 @@ package net.slipp.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 import net.slipp.UnAuthorizedException;
+import support.domain.AbstractEntity;
 
 @Entity
-public class User {
+public class User extends AbstractEntity {
 	public static final GuestUser GUEST_USER = new GuestUser();
-	
-	@Id @GeneratedValue
-	private long id;
 	
 	@Column(unique = true, nullable = false, length = 20)
 	private String userId;
@@ -34,19 +30,11 @@ public class User {
 	}
 	
 	public User(long id, String userId, String password, String name, String email) {
-		this.id = id;
+		super(id);
 		this.userId = userId;
 		this.password = password;
 		this.name = name;
 		this.email = email;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getUserId() {
@@ -114,29 +102,7 @@ public class User {
 	}
 	
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "User [id=" + id + ", userId=" + userId + ", name=" + name + ", email=" + email + "]";
+		return "User [id=" + getId() + ", userId=" + userId + ", name=" + name + ", email=" + email + "]";
 	}
 }
