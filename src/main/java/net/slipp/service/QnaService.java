@@ -24,10 +24,10 @@ public class QnaService {
 	@Resource(name = "answerRepository")
 	private AnswerRepository answerRepository;
 
-	public void create(User loginUser, Question question) {
+	public Question create(User loginUser, Question question) {
 		question.writeBy(loginUser);
 		log.debug("question : {}", question);
-		questionRepository.save(question);
+		return questionRepository.save(question);
 	}
 
 	public Question findById(long id) {

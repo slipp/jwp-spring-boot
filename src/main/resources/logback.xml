@@ -17,6 +17,8 @@
 		<appender-ref ref="LOGGING_STDOUT" />
 	</logger>
 	
+	<logger name="support.jackson" level="DEBUG" />
+	
 	<logger name="net.slipp" level="DEBUG" />
 	
 	<root level="INFO">

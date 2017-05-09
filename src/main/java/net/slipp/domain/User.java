@@ -3,6 +3,8 @@ package net.slipp.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import net.slipp.UnAuthorizedException;
 import support.domain.AbstractEntity;
 
@@ -14,6 +16,7 @@ public class User extends AbstractEntity {
 	private String userId;
 	
 	@Column(nullable = false, length = 20)
+	@JsonIgnore
 	private String password;
 	
 	@Column(nullable = false, length = 20)
@@ -90,6 +93,7 @@ public class User extends AbstractEntity {
 		return this.password.equals(password);
 	}
 	
+	@JsonIgnore
 	public boolean isGuestUser() {
 		return false;
 	}
