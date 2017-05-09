@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import net.slipp.UnAuthorizedException;
+
 @Entity
 public class Question {
 	@Id
@@ -91,6 +93,23 @@ public class Question {
 	public void addAnswer(Answer answer) {
 		answers.add(answer);
 		answer.toQuestion(this);
+	}
+	
+	public boolean isOwner(User loginUser) {
+		return writer.equals(loginUser);
+	}
+	
+	public void update(User loginUser, Question updatedQuestion) {
+		if (!isOwner(loginUser)) {
+			throw new UnAuthorizedException();
+		}
+		
+		this.title = updatedQuestion.title;
+		this.contents = updatedQuestion.contents;
+	}
+	
+	public String toUrl() {
+		return String.format("/questions/%d", this.id);
 	}
 	
 	@Override

@@ -20,4 +20,8 @@ public abstract class BasicAuthIntegrationTest extends IntegrationTest {
 		loginUser = userRepository.findByUserId("javajigi").get();
 		basicAuthTemplate = template.withBasicAuth(loginUser.getUserId(), loginUser.getPassword());
 	}
+	
+	protected User findByUserId(String userId) {
+		return userRepository.findByUserId(userId).get();
+	}
 }

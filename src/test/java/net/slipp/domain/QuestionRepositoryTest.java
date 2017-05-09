@@ -17,7 +17,7 @@ public class QuestionRepositoryTest {
 	
 	@Test
 	public void crud() throws Exception {
-		User loginUser = userRepository.save(UserTest.TEST_USER);
+		User loginUser = userRepository.save(UserTest.JAVAJIGI);
 		Question question = new Question("title", "contents");
 		question.writeBy(loginUser);
 		questionRepository.save(question);
@@ -25,7 +25,7 @@ public class QuestionRepositoryTest {
 	
 	@Test
 	public void addAnswer() throws Exception {
-		User loginUser = userRepository.save(UserTest.TEST_USER);
+		User loginUser = userRepository.save(UserTest.JAVAJIGI);
 		Question question = new Question("title", "contents");
 		question.writeBy(loginUser);
 		Question savedQuestion = questionRepository.save(question);
