@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import net.slipp.domain.Question;
 import net.slipp.domain.User;
 import net.slipp.security.LoginUser;
 import net.slipp.service.QnaService;
@@ -21,8 +20,8 @@ public class AnswerController {
 	
 	@PostMapping("")
 	public String create(@LoginUser User loginUser, @PathVariable long questionId, String contents) {
-		Question question = qnaService.addAnswer(loginUser, questionId, contents);
-		return "redirect:" + question.generateUrl();
+		qnaService.addAnswer(loginUser, questionId, contents);
+		return String.format("redirect:/questions/%d", questionId);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -44,11 +44,12 @@ public class QnaService {
 		return questionRepository.findAll();
 	}
 
-	public Question addAnswer(User loginUser, long questionId, String contents) {
+	public Answer addAnswer(User loginUser, long questionId, String contents) {
 		Question question = questionRepository.findOne(questionId);
 		Answer answer = new Answer(loginUser, contents);
 		question.addAnswer(answer);
-		return questionRepository.save(question);
+		questionRepository.save(question);
+		return answer;
 	}
 
 	public Answer deleteAnswer(User loginUser, long id) {
