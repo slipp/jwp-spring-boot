@@ -1,5 +1,6 @@
 package net.slipp.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -27,5 +28,23 @@ public class UserService {
 		}
 
 		return user;
+	}
+
+	public User add(User user) {
+		return userRepository.save(user);
+	}
+
+	public User update(User loginUser, long id, User updatedUser) {
+		User original = userRepository.findOne(id);
+		original.update(loginUser, updatedUser);
+		return userRepository.save(original);
+	}
+
+	public User findById(long id) {
+		return userRepository.findOne(id);
+	}
+
+	public List<User> findAll() {
+		return userRepository.findAll();
 	}
 }
