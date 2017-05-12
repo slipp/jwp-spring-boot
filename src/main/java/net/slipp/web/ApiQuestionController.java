@@ -1,6 +1,7 @@
 package net.slipp.web;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class ApiQuestionController {
 	
 	@PostMapping("")
 	@ResponseStatus( HttpStatus.CREATED )
-	public Question create(@LoginUser User loginUser, @RequestBody Question question) {
+	public Question create(@LoginUser User loginUser, @Valid @RequestBody Question question) {
 		return qnaService.create(loginUser, question);
 	}
 }

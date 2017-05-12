@@ -2,7 +2,7 @@ package net.slipp.web;
 
 import static net.slipp.domain.QuestionTest.createByLoginUser;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -31,6 +31,18 @@ public class ApiAnswerControllerTest extends BasicAuthIntegrationTest {
 				String.format("/api/%s/answers", savedQuestion.generateUrl()), 
 				answer, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+		log.debug("body : {}", response.getBody());
+	}
+	
+	@Test
+	public void create_invalid() throws Exception {
+		Question savedQuestion = questionRepository.save(createByLoginUser(loginUser));
+		Answer answer = new Answer(loginUser, "T");
+		
+		ResponseEntity<String> response = basicAuthTemplate.postForEntity(
+				String.format("/api/%s/answers", savedQuestion.generateUrl()), 
+				answer, String.class);
+		assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
 		log.debug("body : {}", response.getBody());
 	}
 }

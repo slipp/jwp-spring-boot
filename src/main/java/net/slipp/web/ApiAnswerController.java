@@ -1,6 +1,7 @@
 package net.slipp.web;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,9 @@ public class ApiAnswerController {
 
 	@PostMapping("")
 	@ResponseStatus( HttpStatus.CREATED )
-	public Answer addAnswer(@LoginUser User loginUser, @PathVariable long questionId, @RequestBody Answer answer) {
+	public Answer addAnswer(@LoginUser User loginUser, 
+			@PathVariable long questionId, 
+			@Valid @RequestBody Answer answer) {
 		return qnaService.addAnswer(loginUser, questionId, answer.getContents());
 	}
 }

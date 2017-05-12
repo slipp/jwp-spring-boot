@@ -5,6 +5,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Size;
 
 import net.slipp.UnAuthorizedException;
 import support.domain.AbstractEntity;
@@ -20,6 +21,7 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_to_question"))
 	private Question question;
 	
+	@Size(min = 5)
 	@Lob
 	private String contents;
 	

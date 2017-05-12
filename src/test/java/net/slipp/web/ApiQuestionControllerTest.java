@@ -1,7 +1,7 @@
 package net.slipp.web;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,6 +20,14 @@ public class ApiQuestionControllerTest extends BasicAuthIntegrationTest {
 		Question question = new Question("TDD는 의미있는 활동인가?", "당근 엄청 의미있는 활동이고 말고..");
 		ResponseEntity<String> response = basicAuthTemplate.postForEntity("/api/questions", question, String.class);
 		assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+		log.debug("body : {}", response.getBody());
+	}
+	
+	@Test
+	public void create_invalid() throws Exception {
+		Question question = new Question("T", "T");
+		ResponseEntity<String> response = basicAuthTemplate.postForEntity("/api/questions", question, String.class);
+		assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
 		log.debug("body : {}", response.getBody());
 	}
 	
