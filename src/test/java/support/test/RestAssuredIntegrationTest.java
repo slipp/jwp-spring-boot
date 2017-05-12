@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,9 @@ import net.slipp.domain.UserRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class RestAssuredIntegrationTest {
+	private static final Logger log = LoggerFactory.getLogger(RestAssuredIntegrationTest.class);
+
+	
 	@Value("${local.server.port}")
 	private int serverPort;
 	
@@ -37,5 +42,26 @@ public class RestAssuredIntegrationTest {
 		return given()
 					.auth().preemptive().basic(loginUser.getUserId(), loginUser.getPassword())
 					.contentType(ContentType.JSON);
+	}
+	
+	protected String createResource(String path, Object bodyPayload) {
+		String location = given_auth_json()
+			.body(bodyPayload)
+        .when()
+        	.post(path)
+        .then()
+        	.statusCode(201)
+			.extract().header("location");
+		log.debug("location : {}", location);
+		return location;
+	}
+	
+	protected <T> T getResource(String locationHeader, Class<T> responseClass) {
+	    return given_auth_json()
+	           .when()
+	           		.get(locationHeader)
+	           .then()
+	                .statusCode(200)
+	                .extract().as(responseClass);
 	}
 }
