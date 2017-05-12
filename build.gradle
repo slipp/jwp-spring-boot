@@ -1,34 +1,39 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.2.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+        kotlin_version = '1.1.2-3'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
+    }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'kotlin'
 
 version = '1.0.0'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.15')
-	runtime('com.h2database:h2')
-	runtime('net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.1.0')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile('io.rest-assured:rest-assured:3.0.3')
-	testCompile('org.assertj:assertj-core:3.7.0')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.15')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
+    runtime('com.h2database:h2')
+    runtime('net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.1.0')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('io.rest-assured:rest-assured:3.0.3')
+    testCompile('org.assertj:assertj-core:3.7.0')
 }
