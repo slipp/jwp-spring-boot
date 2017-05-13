@@ -30,12 +30,17 @@ public class RestAssuredIntegrationTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	private User loginUser;
+	protected User loginUser;
 	
 	@Before
 	public void setup() {
 		RestAssured.port = serverPort;
 		loginUser = userRepository.findByUserId("javajigi").get();
+	}
+
+	protected RequestSpecification given_json() {
+		return given()
+				.contentType(ContentType.JSON);
 	}
 	
 	protected RequestSpecification given_auth_json() {
@@ -63,5 +68,25 @@ public class RestAssuredIntegrationTest {
 	           .then()
 	                .statusCode(200)
 	                .extract().as(responseClass);
+	}
+
+	protected <T> T getResources(String locationHeader, Class<T> responseClass) {
+		return given_json()
+				.when()
+					.get(locationHeader)
+				.then()
+					.statusCode(200)
+					.extract().as(responseClass);
+	}
+
+	protected <T> T getResources(String locationHeader, int page, int size, Class<T> responseClass) {
+		return given_json()
+					.param("page", page)
+					.param("size", size)
+				.when()
+					.get(locationHeader)
+				.then()
+					.statusCode(200)
+					.extract().as(responseClass);
 	}
 }

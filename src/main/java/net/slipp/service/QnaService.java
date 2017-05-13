@@ -6,6 +6,8 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.slipp.domain.Answer;
@@ -42,6 +44,10 @@ public class QnaService {
 	
 	public List<Question> findAll() {
 		return questionRepository.findAll();
+	}
+
+	public List<Question> findAll(Pageable pageable) {
+		return questionRepository.findAll(pageable).getContent();
 	}
 
 	public Answer addAnswer(User loginUser, long questionId, String contents) {
