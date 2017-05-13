@@ -15,7 +15,7 @@ import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
 
 import net.slipp.UnAuthorizedException;
-import net.slipp.dto.QuestionDTO;
+import net.slipp.dto.QuestionDto;
 import support.domain.AbstractEntity;
 import support.domain.UrlGeneratable;
 
@@ -93,8 +93,8 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 		return String.format("/questions/%d", getId());
 	}
 
-	public QuestionDTO _toConvertQuestionDTO() {
-		return new QuestionDTO(getId(), this.title, this.contents);
+	public QuestionDto _toConvertQuestionDto() {
+		return new QuestionDto(getId(), this.title, this.contents);
 	}
 
 	@Override

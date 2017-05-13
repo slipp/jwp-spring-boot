@@ -18,9 +18,11 @@ import io.restassured.specification.RequestSpecification;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 
+import javax.annotation.Resource;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class RestAssuredIntegrationTest {
+public abstract class RestAssuredIntegrationTest {
 	private static final Logger log = LoggerFactory.getLogger(RestAssuredIntegrationTest.class);
 
 	
@@ -52,9 +54,9 @@ public class RestAssuredIntegrationTest {
 	protected String createResource(String path, Object bodyPayload) {
 		String location = given_auth_json()
 			.body(bodyPayload)
-        .when()
+			.when()
         	.post(path)
-        .then()
+        	.then()
         	.statusCode(201)
 			.extract().header("location");
 		log.debug("location : {}", location);
@@ -63,30 +65,30 @@ public class RestAssuredIntegrationTest {
 	
 	protected <T> T getResource(String locationHeader, Class<T> responseClass) {
 	    return given_auth_json()
-	           .when()
-	           		.get(locationHeader)
-	           .then()
-	                .statusCode(200)
-	                .extract().as(responseClass);
+	            .when()
+                .get(locationHeader)
+	            .then()
+	            .statusCode(200)
+	            .extract().as(responseClass);
 	}
 
 	protected <T> T getResources(String locationHeader, Class<T> responseClass) {
 		return given_json()
 				.when()
-					.get(locationHeader)
+				.get(locationHeader)
 				.then()
-					.statusCode(200)
-					.extract().as(responseClass);
+				.statusCode(200)
+				.extract().as(responseClass);
 	}
 
 	protected <T> T getResources(String locationHeader, int page, int size, Class<T> responseClass) {
 		return given_json()
-					.param("page", page)
-					.param("size", size)
+				.param("page", page)
+				.param("size", size)
 				.when()
-					.get(locationHeader)
+				.get(locationHeader)
 				.then()
-					.statusCode(200)
-					.extract().as(responseClass);
+				.statusCode(200)
+				.extract().as(responseClass);
 	}
 }
