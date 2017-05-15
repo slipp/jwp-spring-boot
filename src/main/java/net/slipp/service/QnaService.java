@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import net.slipp.CannotDeleteException;
 import net.slipp.domain.Answer;
 import net.slipp.domain.AnswerRepository;
 import net.slipp.domain.Question;
@@ -40,6 +41,10 @@ public class QnaService {
 		question.update(loginUser, updatedQuestion);
 		return questionRepository.save(question);
 	}
+	
+    public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
+    	// TODO 삭제 로직 구현. 핵심 로직은 가능하면 이곳에 구현하지 말 것.
+    }
 	
 	public List<Question> findAll() {
 		return questionRepository.findAll();

@@ -25,6 +25,8 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
 	@Lob
 	private String contents;
 	
+	private boolean deleted = false;
+	
 	public Answer() {
 	}
 	
@@ -51,6 +53,10 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
 	
 	public boolean isOwner(User loginUser) {
 		return writer.equals(loginUser);
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
 	}
 	
 	@Override
