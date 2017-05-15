@@ -1,6 +1,6 @@
 package support.test;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -17,8 +17,6 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
-
-import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
