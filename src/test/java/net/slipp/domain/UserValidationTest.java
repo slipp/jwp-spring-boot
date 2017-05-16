@@ -16,25 +16,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class UserValidationTest {
-	private static final Logger log = LoggerFactory.getLogger(UserValidationTest.class);
-
-	
-	private static Validator validator;
-
-	@BeforeClass
-	public static void setup() {
-		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-		validator = factory.getValidator();
-	}
-	
-	@Test
-	public void userIdWhenIsEmpty() throws Exception {
-		User user = new User("", "password", "name", "javajigi@slipp.net");
-		Set<ConstraintViolation<User>> constraintViolcations = validator.validate(user);
-		assertThat(constraintViolcations.size(), is(1));
-		
-		for (ConstraintViolation<User> constraintViolation : constraintViolcations) {
-			log.debug("violation error message : {}", constraintViolation.getMessage());
-		}
-	}
+    private static final Logger log = LoggerFactory.getLogger(UserValidationTest.class);
+    
+    
+    private static Validator validator;
+    
+    @BeforeClass
+    public static void setup() {
+    	ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    	validator = factory.getValidator();
+    }
+    
+    @Test
+    public void userIdWhenIsEmpty() throws Exception {
+    	User user = new User("", "password", "name", "javajigi@slipp.net");
+    	Set<ConstraintViolation<User>> constraintViolcations = validator.validate(user);
+    	assertThat(constraintViolcations.size(), is(1));
+    	
+    	for (ConstraintViolation<User> constraintViolation : constraintViolcations) {
+    		log.debug("violation error message : {}", constraintViolation.getMessage());
+    	}
+    }
 }
