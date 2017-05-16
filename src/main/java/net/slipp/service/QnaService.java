@@ -3,15 +3,19 @@ package net.slipp.service;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import net.slipp.CannotDeleteException;
 import net.slipp.domain.Answer;
 import net.slipp.domain.AnswerRepository;
+import net.slipp.domain.DeleteHistory;
+import net.slipp.domain.DeleteHistoryRepository;
 import net.slipp.domain.Question;
 import net.slipp.domain.QuestionRepository;
 import net.slipp.domain.User;
@@ -25,6 +29,9 @@ public class QnaService {
 	
 	@Resource(name = "answerRepository")
 	private AnswerRepository answerRepository;
+	
+	@Resource(name = "deleteHistoryRepository")
+	private DeleteHistoryRepository deleteHistoryRepository;
 
 	public Question create(User loginUser, Question question) {
 		question.writeBy(loginUser);
@@ -42,8 +49,17 @@ public class QnaService {
 		return questionRepository.save(question);
 	}
 	
-    public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
-    	// TODO 삭제 로직 구현. 핵심 로직은 가능하면 이곳에 구현하지 말 것.
+    @Transactional
+    public void deleteQuestion(long questionId, User loginUser) throws CannotDeleteException {
+        Question question = questionRepository.findOne(questionId);
+        if (question == null) {
+            throw new EmptyResultDataAccessException("존재하지 않는 질문입니다.", 1);
+        }
+
+        List<DeleteHistory> historeis = question.delete(loginUser);
+        for (DeleteHistory deleteHistory : historeis) {
+            deleteHistoryRepository.save(deleteHistory);
+        }
     }
 	
 	public List<Question> findAll() {

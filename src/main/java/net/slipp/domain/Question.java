@@ -1,5 +1,6 @@
 package net.slipp.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Where;
 
+import net.slipp.CannotDeleteException;
 import net.slipp.UnAuthorizedException;
 import net.slipp.dto.QuestionDto;
 import support.domain.AbstractEntity;
@@ -96,6 +98,22 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 		this.title = updatedQuestion.title;
 		this.contents = updatedQuestion.contents;
 	}
+	
+    public List<DeleteHistory> delete(User loginUser) throws CannotDeleteException {
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("다른 사람의 글은 삭제할 수 없다.");
+        }
+
+        List<DeleteHistory> histories = new ArrayList<>();
+        for (Answer answer : answers) {
+            histories.add(answer.delete(loginUser));
+        }
+
+        this.deleted = true;
+
+        histories.add(new DeleteHistory(ContentType.QUESTION, getId(), loginUser, LocalDateTime.now()));
+        return histories;
+    }
 
 	@Override
 	public String generateUrl() {
