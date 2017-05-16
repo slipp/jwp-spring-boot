@@ -33,6 +33,7 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
     runtime('com.h2database:h2')
     runtime('net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.1.0')
+    runtime('org.flywaydb:flyway-core:4.2.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('io.rest-assured:rest-assured:3.0.3')
     testCompile('org.assertj:assertj-core:3.7.0')
