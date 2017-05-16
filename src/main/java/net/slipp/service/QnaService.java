@@ -15,7 +15,6 @@ import net.slipp.CannotDeleteException;
 import net.slipp.domain.Answer;
 import net.slipp.domain.AnswerRepository;
 import net.slipp.domain.DeleteHistory;
-import net.slipp.domain.DeleteHistoryRepository;
 import net.slipp.domain.Question;
 import net.slipp.domain.QuestionRepository;
 import net.slipp.domain.User;
@@ -30,8 +29,8 @@ public class QnaService {
 	@Resource(name = "answerRepository")
 	private AnswerRepository answerRepository;
 	
-	@Resource(name = "deleteHistoryRepository")
-	private DeleteHistoryRepository deleteHistoryRepository;
+	@Resource(name = "deleteHistoryService")
+	private DeleteHistoryService deleteHistoryService;
 
 	public Question create(User loginUser, Question question) {
 		question.writeBy(loginUser);
@@ -50,20 +49,18 @@ public class QnaService {
 	}
 	
     @Transactional
-    public void deleteQuestion(long questionId, User loginUser) throws CannotDeleteException {
+    public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
         Question question = questionRepository.findOne(questionId);
         if (question == null) {
             throw new EmptyResultDataAccessException("존재하지 않는 질문입니다.", 1);
         }
 
-        List<DeleteHistory> historeis = question.delete(loginUser);
-        for (DeleteHistory deleteHistory : historeis) {
-            deleteHistoryRepository.save(deleteHistory);
-        }
+        List<DeleteHistory> histories = question.delete(loginUser);
+        deleteHistoryService.saveAll(histories);
     }
 	
-	public List<Question> findAll() {
-		return questionRepository.findAll();
+	public Iterable<Question> findAll() {
+		return questionRepository.findByDeleted(false);
 	}
 
 	public List<Question> findAll(Pageable pageable) {

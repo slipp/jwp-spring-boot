@@ -1,6 +1,6 @@
 package support.test;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -49,17 +49,28 @@ public abstract class RestAssuredIntegrationTest {
 					.contentType(ContentType.JSON);
 	}
 	
+	protected RequestSpecification given_auth_json(String userId) {
+	    User otherUser = userRepository.findByUserId(userId).get();
+        return given()
+                    .auth().preemptive().basic(otherUser.getUserId(), otherUser.getPassword())
+                    .contentType(ContentType.JSON);
+    }
+	
 	protected String createResource(String path, Object bodyPayload) {
-		String location = given_auth_json()
-			.body(bodyPayload)
-			.when()
-        	.post(path)
-        	.then()
-        	.statusCode(201)
-			.extract().header("location");
-		log.debug("location : {}", location);
-		return location;
+		return createResource(path, bodyPayload, loginUser.getUserId());
 	}
+	
+	protected String createResource(String path, Object bodyPayload, String userId) {
+        String location = given_auth_json(userId)
+            .body(bodyPayload)
+            .when()
+            .post(path)
+            .then()
+            .statusCode(201)
+            .extract().header("location");
+        log.debug("location : {}", location);
+        return location;
+    }
 	
 	protected <T> T getResource(String locationHeader, Class<T> responseClass) {
 	    return given_auth_json()

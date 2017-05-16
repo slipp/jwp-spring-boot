@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import net.slipp.CannotDeleteException;
 import net.slipp.domain.Question;
 import net.slipp.domain.User;
 import net.slipp.security.LoginUser;
@@ -52,5 +53,15 @@ public class ApiQuestionController {
 	@GetMapping("/{id}")
 	public QuestionDto show(@PathVariable long id) {
 		return qnaService.findById(id)._toConvertQuestionDto();
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@LoginUser User loginUser, @PathVariable long id) {
+	    try {
+            qnaService.deleteQuestion(loginUser, id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (CannotDeleteException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 	}
 }

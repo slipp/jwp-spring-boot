@@ -1,13 +1,15 @@
 package net.slipp.web;
 
-import net.slipp.dto.QuestionDto;
-import net.slipp.dto.QuestionsDto;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import support.test.RestAssuredIntegrationTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import net.slipp.dto.AnswerDto;
+import net.slipp.dto.QuestionDto;
+import net.slipp.dto.QuestionsDto;
+import support.test.RestAssuredIntegrationTest;
 
 public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
     private static final Logger log = LoggerFactory.getLogger(ApiRAQuestionControllerTest.class);
@@ -56,5 +58,39 @@ public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
             );
             createResource("/api/questions", newQuestion);
         }
+    }
+    
+    @Test
+    public void delete_success() throws Exception {
+        QuestionDto question = createQuestionWithAnswer(loginUser.getUserId());
+        
+        given_auth_json()
+            .when()
+            .delete(question.generateUrl())
+            .then()
+            .statusCode(204);            
+    }
+
+    @Test
+    public void delete_failure() throws Exception {
+        QuestionDto question = createQuestionWithAnswer("sanjigi");
+        
+        given_auth_json()
+            .when()
+            .delete(question.generateUrl())
+            .then()
+            .statusCode(400); 
+    }
+    
+    private QuestionDto createQuestionWithAnswer(String userId) {
+        QuestionDto newQuestion = new QuestionDto(
+                "TDD는 의미있는 활동인가?",
+                "당근 엄청 의미있는 활동이고 말고.."
+        );
+        QuestionDto question = getResource
+                (createResource("/api/questions", newQuestion), QuestionDto.class);
+        AnswerDto newAnswer = new AnswerDto("하지만 TDD는 너무 하기 힘들 활동임다.");
+        createResource(question.generateUrl() + "/answers", newAnswer, userId);
+        return question;
     }
 }
