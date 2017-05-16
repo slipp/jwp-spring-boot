@@ -35,8 +35,8 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
 				.urlEncodedForm()
 		        .addParameter("userId", userId)
-				.addParameter("password", "pass")
-				.addParameter("name", "재성")
+				.addParameter("password", "password")
+				.addParameter("name", "박재성")
 				.addParameter("email", "javajigi@slipp.net")
 				.build();
 

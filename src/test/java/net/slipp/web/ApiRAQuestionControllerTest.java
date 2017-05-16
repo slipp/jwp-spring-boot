@@ -1,11 +1,17 @@
 package net.slipp.web;
 
+import static net.slipp.domain.UserTest.SANJIGI;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.slipp.domain.DeleteHistoryRepository;
 import net.slipp.dto.AnswerDto;
 import net.slipp.dto.QuestionDto;
 import net.slipp.dto.QuestionsDto;
@@ -13,6 +19,9 @@ import support.test.RestAssuredIntegrationTest;
 
 public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
     private static final Logger log = LoggerFactory.getLogger(ApiRAQuestionControllerTest.class);
+    
+    @Resource(name = "deleteHistoryRepository")
+    private DeleteHistoryRepository deleteHistoryRepository;
 
     @Test
     public void create() throws Exception {
@@ -68,18 +77,23 @@ public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
             .when()
             .delete(question.generateUrl())
             .then()
-            .statusCode(204);            
+            .statusCode(204);
+        
+        assertThat(deleteHistoryRepository.count(), is(2L));
+        deleteHistoryRepository.deleteAll();
     }
 
     @Test
     public void delete_failure() throws Exception {
-        QuestionDto question = createQuestionWithAnswer("sanjigi");
+        QuestionDto question = createQuestionWithAnswer(SANJIGI.getUserId());
         
         given_auth_json()
             .when()
             .delete(question.generateUrl())
             .then()
-            .statusCode(400); 
+            .statusCode(400);
+        
+        assertThat(deleteHistoryRepository.count(), is(0L));
     }
     
     private QuestionDto createQuestionWithAnswer(String userId) {
