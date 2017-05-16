@@ -2,6 +2,9 @@ package net.slipp.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,16 +15,20 @@ import support.domain.AbstractEntity;
 public class User extends AbstractEntity {
 	public static final GuestUser GUEST_USER = new GuestUser();
 	
+	@Size(min = 3, max = 20)
 	@Column(unique = true, nullable = false, length = 20)
 	private String userId;
 	
+	@Size(min = 6, max = 20)
 	@Column(nullable = false, length = 20)
 	@JsonIgnore
 	private String password;
 	
+	@Size(min = 3, max = 20)
 	@Column(nullable = false, length = 20)
 	private String name;
 	
+	@Email
 	@Column(length = 50)
 	private String email;
 	

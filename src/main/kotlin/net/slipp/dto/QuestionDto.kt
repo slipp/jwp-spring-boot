@@ -2,9 +2,17 @@ package net.slipp.dto
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-data class QuestionDto(var id: Long, var title: String, var contents: String) {
-    constructor(): this(0, "", "")
+import javax.validation.constraints.Size
 
-    constructor(title: String, contents: String): this(0, title, contents)
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class QuestionDto(var id: Long,
+
+                       @field:Size(min = 3, max = 100)
+                       var title: String,
+                    
+                       @field:Size(min = 3)
+                       var contents: String) {
+    constructor() : this(0, "", "")
+
+    constructor(title: String, contents: String) : this(0, title, contents)
 }
