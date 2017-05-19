@@ -7,16 +7,6 @@
 		</layout>
 	</appender>
 
-	<appender name="LOGGING_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%d{HH:mm:ss.SSS} [%-5level] [%thread] %m%n</Pattern>
-		</layout>
-	</appender>
-	
-	<logger name="support.aspect" level="DEBUG">
-		<appender-ref ref="LOGGING_STDOUT" />
-	</logger>
-	
 	<logger name="net.slipp" level="DEBUG" />
 	
 	<root level="INFO">
