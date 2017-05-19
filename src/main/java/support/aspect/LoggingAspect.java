@@ -11,17 +11,31 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 public class LoggingAspect {
-	private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
+    @Pointcut("within(net.slipp.web..*) || within(net.slipp.service..*)")
+    public void loggingPointcut() {}
 
-	
-	@Pointcut("within(net.slipp.web..*) || within(net.slipp.service..*)")
-    private void loggingPointcut() {}
-
-    @Around("support.aspect.LoggingAspect.loggingPointcut()")
+    @Around("loggingPointcut()")
     public Object doLogging(ProceedingJoinPoint pjp) throws Throwable {
-    	log.debug("[{}] - arguments : {}", pjp.getSignature(), pjp.getArgs());
-    	Object returnValue = pjp.proceed();
-    	log.debug("[{}] - return value : {}", pjp.getSignature(), returnValue);
-    	return returnValue;
+        final Logger log = LoggerFactory.getLogger(pjp.getTarget().getClass());
+        
+        final String methodName = pjp.getSignature().getName();
+        if (!isUtilMethod(methodName)) {
+            log.debug("{}(): {}", methodName, pjp.getArgs());
+        }
+        
+        Object result = pjp.proceed();
+        
+        if (!isUtilMethod(methodName)) {
+            log.debug("{}(): result={}", methodName, result);
+        }
+        return result;
+    }
+    
+    private boolean isUtilMethod(String name) {
+        return name.startsWith("get")
+                || name.startsWith("set")
+                || name.equals("toString")
+                || name.equals("equals")
+                || name.equals("hashCode");
     }
 }
