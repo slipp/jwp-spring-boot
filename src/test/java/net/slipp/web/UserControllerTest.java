@@ -3,6 +3,8 @@ package net.slipp.web;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.util.Optional;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
+import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 import support.test.BasicAuthIntegrationTest;
 import support.test.HtmlFormDataBuilder;
@@ -31,9 +34,10 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 	
 	@Test
 	public void create() throws Exception {
-		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+		String userId = "firstuser";
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
 				.urlEncodedForm()
-		        .addParameter("userId", "javajigi")
+		        .addParameter("userId", userId)
 				.addParameter("password", "pass")
 				.addParameter("name", "재성")
 				.addParameter("email", "javajigi@slipp.net")
@@ -42,8 +46,10 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 		ResponseEntity<String> response = template.postForEntity("/users", request, String.class);
         
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-		assertNotNull(userRepository.findByUserId("javajigi"));
+		Optional<User> maybeUser = userRepository.findByUserId(userId);
+		assertTrue(maybeUser.isPresent());
 		assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
+		userRepository.delete(maybeUser.get());
 	}
 	
 	@Test
