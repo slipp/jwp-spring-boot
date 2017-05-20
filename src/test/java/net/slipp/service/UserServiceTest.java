@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import net.slipp.UnAuthenticationException;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 
@@ -24,7 +25,7 @@ public class UserServiceTest {
     private UserService userService;
     
     @Test
-    public void login_success() {
+    public void login_success() throws Exception {
         User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
         when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
         
@@ -32,15 +33,15 @@ public class UserServiceTest {
         assertThat(loginUser, is(user));
     }
     
-    @Test(expected = IllegalStateException.class)
-    public void login_failed_when_user_not_found() {
+    @Test(expected = UnAuthenticationException.class)
+    public void login_failed_when_user_not_found() throws Exception {
         when(userRepository.findByUserId("sanjigi")).thenReturn(Optional.empty());
         
         userService.login("sanjigi", "password");
     }
     
-    @Test(expected = IllegalStateException.class)
-    public void login_failed_when_mismatch_password() {
+    @Test(expected = UnAuthenticationException.class)
+    public void login_failed_when_mismatch_password() throws Exception {
         User user = new User("sanjigi", "password", "name", "javajigi@slipp.net");
         when(userRepository.findByUserId(user.getUserId())).thenReturn(Optional.of(user));
         
