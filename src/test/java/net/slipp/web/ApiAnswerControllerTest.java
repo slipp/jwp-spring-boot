@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import net.slipp.domain.Answer;
 import net.slipp.domain.Question;
 import net.slipp.domain.QuestionRepository;
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 
-public class ApiAnswerControllerTest extends BasicAuthIntegrationTest {
+public class ApiAnswerControllerTest extends BasicAuthAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(ApiAnswerControllerTest.class);
 
 	@Autowired

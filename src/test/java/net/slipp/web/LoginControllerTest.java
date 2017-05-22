@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class LoginControllerTest extends BasicAuthIntegrationTest {
+public class LoginControllerTest extends BasicAuthAcceptanceTest {
 	@Test
 	public void login_success() throws Exception {
 		ResponseEntity<String> response = login(loginUser.getUserId(), loginUser.getPassword());

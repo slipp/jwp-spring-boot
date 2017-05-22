@@ -5,11 +5,11 @@ import net.slipp.dto.QuestionsDto;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import support.test.RestAssuredIntegrationTest;
+import support.test.RestAssuredAcceptanceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
+public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(ApiRAQuestionControllerTest.class);
 
     @Test
