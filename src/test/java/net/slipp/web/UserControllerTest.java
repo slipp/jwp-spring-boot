@@ -17,10 +17,10 @@ import org.springframework.util.MultiValueMap;
 
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class UserControllerTest extends BasicAuthIntegrationTest {
+public class UserControllerTest extends BasicAuthAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
 
 	@Autowired private UserRepository userRepository;

@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 
-public class HomeControllerTest extends BasicAuthIntegrationTest {
+public class HomeControllerTest extends BasicAuthAcceptanceTest {
 	@Test
 	public void home_logout() {
 		ResponseEntity<String> response = template.getForEntity("/", String.class);

@@ -8,7 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 
-public abstract class BasicAuthIntegrationTest extends IntegrationTest {
+public abstract class BasicAuthAcceptanceTest extends AcceptanceTest {
 	protected TestRestTemplate basicAuthTemplate;
 
 	@Autowired
