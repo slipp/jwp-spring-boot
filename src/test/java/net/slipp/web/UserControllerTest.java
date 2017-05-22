@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
 import net.slipp.domain.UserRepository;
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class UserControllerTest extends BasicAuthIntegrationTest {
+public class UserControllerTest extends BasicAuthAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
 
 	@Autowired private UserRepository userRepository;
@@ -31,12 +31,12 @@ public class UserControllerTest extends BasicAuthIntegrationTest {
 	
 	@Test
 	public void create() throws Exception {
-		String userId = "java";
+		String userId = "testuser";
 		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
 				.urlEncodedForm()
 		        .addParameter("userId", userId)
-				.addParameter("password", "pass")
-				.addParameter("name", "재성")
+				.addParameter("password", "password")
+				.addParameter("name", "자바지기")
 				.addParameter("email", "javajigi@slipp.net")
 				.build();
 

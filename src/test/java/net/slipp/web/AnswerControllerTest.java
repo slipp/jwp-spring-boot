@@ -17,10 +17,10 @@ import net.slipp.domain.Answer;
 import net.slipp.domain.AnswerRepository;
 import net.slipp.domain.Question;
 import net.slipp.domain.QuestionRepository;
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class AnswerControllerTest extends BasicAuthIntegrationTest {
+public class AnswerControllerTest extends BasicAuthAcceptanceTest {
 	@Autowired
 	private QuestionRepository questionRepository;
 	

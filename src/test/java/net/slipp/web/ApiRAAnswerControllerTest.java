@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import net.slipp.dto.AnswerDto;
 import net.slipp.dto.QuestionDto;
-import support.test.RestAssuredIntegrationTest;
+import support.test.RestAssuredAcceptanceTest;
 
-public class ApiRAAnswerControllerTest extends RestAssuredIntegrationTest {
+public class ApiRAAnswerControllerTest extends RestAssuredAcceptanceTest {
     @Test
     public void create() {
         QuestionDto newQuestion = new QuestionDto(
