@@ -15,9 +15,9 @@ import net.slipp.domain.DeleteHistoryRepository;
 import net.slipp.dto.AnswerDto;
 import net.slipp.dto.QuestionDto;
 import net.slipp.dto.QuestionsDto;
-import support.test.RestAssuredIntegrationTest;
+import support.test.RestAssuredAcceptanceTest;
 
-public class ApiRAQuestionControllerTest extends RestAssuredIntegrationTest {
+public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(ApiRAQuestionControllerTest.class);
     
     @Resource(name = "deleteHistoryRepository")
