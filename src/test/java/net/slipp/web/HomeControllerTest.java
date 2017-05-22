@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import support.test.AbstractIntegrationTest;
+import support.test.AbstractAcceptanceTest;
 
-public class HomeControllerTest extends AbstractIntegrationTest {
+public class HomeControllerTest extends AbstractAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(HomeControllerTest.class);
 
 	@Test

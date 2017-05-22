@@ -14,10 +14,10 @@ import org.springframework.util.MultiValueMap;
 
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
-import support.test.AbstractIntegrationTest;
+import support.test.AbstractAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class LoginControllerTest extends AbstractIntegrationTest {
+public class LoginControllerTest extends AbstractAcceptanceTest {
 	@Autowired private UserRepository userRepository;
 	
 	private User testUser;

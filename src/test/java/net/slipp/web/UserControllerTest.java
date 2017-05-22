@@ -16,10 +16,10 @@ import org.springframework.util.MultiValueMap;
 
 import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
-import support.test.AbstractIntegrationTest;
+import support.test.AbstractAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class UserControllerTest extends AbstractIntegrationTest {
+public class UserControllerTest extends AbstractAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
 
 	@Autowired private UserRepository userRepository;

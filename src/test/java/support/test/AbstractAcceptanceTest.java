@@ -9,6 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public abstract class AbstractIntegrationTest {
+public abstract class AbstractAcceptanceTest {
 	@Autowired protected TestRestTemplate template;
 }
