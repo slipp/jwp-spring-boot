@@ -22,8 +22,8 @@ import net.slipp.domain.UserRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public abstract class RestAssuredIntegrationTest {
-	private static final Logger log = LoggerFactory.getLogger(RestAssuredIntegrationTest.class);
+public abstract class RestAssuredAcceptanceTest {
+	private static final Logger log = LoggerFactory.getLogger(RestAssuredAcceptanceTest.class);
 
 	
 	@Value("${local.server.port}")

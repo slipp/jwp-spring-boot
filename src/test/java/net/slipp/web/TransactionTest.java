@@ -11,9 +11,9 @@ import net.slipp.domain.DeleteHistoryRepository;
 import net.slipp.domain.QuestionRepository;
 import net.slipp.dto.AnswerDto;
 import net.slipp.dto.QuestionDto;
-import support.test.RestAssuredIntegrationTest;
+import support.test.RestAssuredAcceptanceTest;
 
-public class TransactionTest extends RestAssuredIntegrationTest {
+public class TransactionTest extends RestAssuredAcceptanceTest {
     @Resource(name = "questionRepository")
     private QuestionRepository questionRepository;
     
