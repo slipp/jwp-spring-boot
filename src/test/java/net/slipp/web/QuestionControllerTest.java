@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
-public class QuestionControllerTest extends BasicAuthIntegrationTest {
+public class QuestionControllerTest extends BasicAuthAcceptanceTest {
 	@Test
 	public void createForm_logout() throws Exception {
 		ResponseEntity<String> response = template.getForEntity("/questions/form", String.class);
