@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import net.slipp.domain.Question;
-import support.test.BasicAuthIntegrationTest;
+import support.test.BasicAuthAcceptanceTest;
 
-public class ApiQuestionControllerTest extends BasicAuthIntegrationTest {
+public class ApiQuestionControllerTest extends BasicAuthAcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(ApiQuestionControllerTest.class);
 
 	@Test
