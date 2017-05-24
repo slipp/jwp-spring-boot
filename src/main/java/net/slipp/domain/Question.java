@@ -1,21 +1,16 @@
 package net.slipp.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Where;
 
 import net.slipp.CannotDeleteException;
 import net.slipp.UnAuthorizedException;
@@ -37,10 +32,8 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private User writer;
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-	@Where(clause = "deleted = false")
-	@OrderBy("id ASC")
-	private List<Answer> answers = new ArrayList<>();
+    @Embedded
+    private Answers answers = new Answers();
 
 	private boolean deleted = false;
 	
@@ -77,8 +70,8 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	}
 
 	public Answer addAnswer(Answer answer) {
+	    answer.toQuestion(this);
 		answers.add(answer);
-		answer.toQuestion(this);
 		return answer;
 	}
 
@@ -104,10 +97,7 @@ public class Question extends AbstractEntity implements UrlGeneratable {
             throw new CannotDeleteException("다른 사람의 글은 삭제할 수 없다.");
         }
 
-        List<DeleteHistory> histories = new ArrayList<>();
-        for (Answer answer : answers) {
-            histories.add(answer.delete(loginUser));
-        }
+        List<DeleteHistory> histories = answers.delete(loginUser);
 
         this.deleted = true;
 
