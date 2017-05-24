@@ -1,20 +1,13 @@
 package net.slipp.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Where;
 
 import net.slipp.UnAuthorizedException;
 import net.slipp.dto.QuestionDto;
@@ -35,10 +28,8 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
 	private User writer;
 
-	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-	@Where(clause = "deleted = false")
-	@OrderBy("id ASC")
-	private List<Answer> answers = new ArrayList<>();
+    @Embedded
+    private Answers answers = new Answers();
 
 	private boolean deleted = false;
 	
@@ -75,8 +66,8 @@ public class Question extends AbstractEntity implements UrlGeneratable {
 	}
 
 	public Answer addAnswer(Answer answer) {
+	    answer.toQuestion(this);
 		answers.add(answer);
-		answer.toQuestion(this);
 		return answer;
 	}
 
