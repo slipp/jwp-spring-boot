@@ -6,7 +6,6 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,11 +49,7 @@ public class QnaService {
 
     @Transactional
     public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
-        Question question = questionRepository.findOne(questionId);
-        if (question == null) {
-            throw new EmptyResultDataAccessException("존재하지 않는 질문입니다.", 1);
-        }
-
+        Question question = questionRepository.getOne(questionId);
         List<DeleteHistory> histories = question.delete(loginUser);
         deleteHistoryService.saveAll(histories);
     }

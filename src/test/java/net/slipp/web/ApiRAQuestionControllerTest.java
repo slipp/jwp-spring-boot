@@ -70,6 +70,15 @@ public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
     }
     
     @Test
+    public void delete_not_existed() throws Exception {
+        given_auth_json()
+            .when()
+            .delete(String.format("/api/questions/%d", Integer.MAX_VALUE))
+            .then()
+            .statusCode(400);
+    }
+    
+    @Test
     public void delete_success() throws Exception {
         QuestionDto question = createQuestionWithAnswer(loginUser.getUserId());
         
