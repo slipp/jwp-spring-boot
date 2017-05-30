@@ -1,7 +1,7 @@
 package net.slipp.domain;
 
-import support.jpa.SlippRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface QuestionRepository extends SlippRepository<Question, Long> {
+public interface QuestionRepository extends JpaRepository<Question, Long> {
     Iterable<Question> findByDeleted(boolean deleted);
 }

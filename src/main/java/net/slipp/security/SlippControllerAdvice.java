@@ -1,8 +1,9 @@
 package net.slipp.security;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,10 +15,10 @@ import net.slipp.UnAuthorizedException;
 public class SlippControllerAdvice {
     private static final Logger log = LoggerFactory.getLogger(SlippControllerAdvice.class);
 
-    @ExceptionHandler(EmptyResultDataAccessException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public void emptyResultData() {
-        log.debug("EmptyResultDataAccessException is happened!");
+        log.debug("EntityNotFoundException is happened!");
     }
     
     @ExceptionHandler(UnAuthorizedException.class)
