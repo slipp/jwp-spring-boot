@@ -11,10 +11,11 @@ import javax.persistence.OrderBy;
 import org.hibernate.annotations.Where;
 
 import net.slipp.CannotDeleteException;
+import net.slipp.UnAuthorizedException;
 
 @Embeddable
 public class Answers {
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="question", cascade = CascadeType.ALL)
     @Where(clause = "deleted = false")
     @OrderBy("id ASC")
     private List<Answer> answers = new ArrayList<>();
@@ -27,9 +28,18 @@ public class Answers {
         List<DeleteHistory> histories = new ArrayList<>();
         
         for (Answer answer : answers) {
-            histories.add(answer.delete(loginUser));
+            histories.add(deleteAnswer(loginUser, answer));
         }
         
         return histories;
+    }
+
+    private DeleteHistory deleteAnswer(User loginUser, Answer answer)
+            throws CannotDeleteException {
+        try {
+            return answer.delete(loginUser);
+        } catch (UnAuthorizedException e) {
+            throw new CannotDeleteException("다른 사용자가 쓴 답변이 있어 삭제할 수 없습니다.");
+        }
     }
 }

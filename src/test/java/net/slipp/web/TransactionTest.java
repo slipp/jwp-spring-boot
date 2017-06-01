@@ -35,6 +35,8 @@ public class TransactionTest extends RestAssuredAcceptanceTest {
     
     @Test
     public void delete_transaction() throws Exception {
+        deleteHistoryRepository.deleteAll();
+        
         QuestionDto question = createQuestionWithAnswer(loginUser.getUserId());
         
         given_auth_json()

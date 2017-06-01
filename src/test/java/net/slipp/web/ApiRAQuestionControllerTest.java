@@ -80,6 +80,8 @@ public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
     
     @Test
     public void delete_success() throws Exception {
+        deleteHistoryRepository.deleteAll();
+        
         QuestionDto question = createQuestionWithAnswer(loginUser.getUserId());
         
         given_auth_json()
@@ -94,6 +96,8 @@ public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
 
     @Test
     public void delete_failure() throws Exception {
+        deleteHistoryRepository.deleteAll();
+        
         QuestionDto question = createQuestionWithAnswer(SANJIGI.getUserId());
         
         given_auth_json()

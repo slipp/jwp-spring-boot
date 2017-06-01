@@ -1,5 +1,6 @@
 package net.slipp.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -72,8 +73,7 @@ public class QnaService {
 
     public Answer deleteAnswer(User loginUser, long id) {
         Answer answer = answerRepository.findOne(id);
-        answer.deletedBy(loginUser);
-        answerRepository.delete(answer);
+        deleteHistoryService.saveAll(Arrays.asList(answer.delete(loginUser)));
         return answer;
     }
 }
