@@ -2,9 +2,7 @@ package net.slipp.web;
 
 import static net.slipp.domain.QuestionTest.createByLoginUser;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,7 @@ public class AnswerControllerTest extends BasicAuthAcceptanceTest {
 		ResponseEntity<String> response = basicAuthTemplate.postForEntity(savedAnswer.generateUrl(), request, String.class);
 
 		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-		assertNull(answerRepository.findOne(savedAnswer.getId()));
+		assertTrue(answerRepository.findOne(savedAnswer.getId()).isDeleted());
 	}
 	
 	@Test

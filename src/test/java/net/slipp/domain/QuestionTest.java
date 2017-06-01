@@ -24,11 +24,6 @@ public class QuestionTest {
         question.writeBy(writer);
     }
 
-    @Test(expected = CannotDeleteException.class)
-    public void delete_다른_사람이_쓴_질문() throws Exception {
-        question.delete(newUser(2L));
-    }
-
     @Test
     public void delete_답변이_없는_자신이_쓴_질문() throws Exception {
         assertFalse(question.isDeleted());

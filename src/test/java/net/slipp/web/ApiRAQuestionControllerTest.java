@@ -81,7 +81,7 @@ public class ApiRAQuestionControllerTest extends RestAssuredAcceptanceTest {
     @Test
     public void delete_success() throws Exception {
         QuestionDto question = createQuestionWithAnswer(loginUser.getUserId());
-        
+
         given_auth_json()
             .when()
             .delete(question.generateUrl())

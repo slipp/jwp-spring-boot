@@ -9,17 +9,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
-import net.slipp.CannotDeleteException;
-import net.slipp.UnAuthorizedException;
-import support.domain.AbstractEntity;
+import support.domain.AbstractUserEntity;
 import support.domain.UrlGeneratable;
 
 @Entity
-public class Answer extends AbstractEntity implements UrlGeneratable {
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
-    private User writer;
-
+public class Answer extends AbstractUserEntity implements UrlGeneratable {
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_to_question"))
     private Question question;
@@ -34,20 +28,15 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
     }
 
     public Answer(User writer, String contents) {
-        this.writer = writer;
+        super.writeBy(writer);
         this.contents = contents;
     }
     
     public Answer(Long id, User writer, Question question, String contents) {
-        super(id);
-        this.writer = writer;
+        super(id, writer);
         this.question = question;
         this.contents = contents;
         this.deleted = false;
-    }
-
-    public User getWriter() {
-        return writer;
     }
 
     public Question getQuestion() {
@@ -62,19 +51,13 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
         this.question = question;
     }
 
-    public boolean isOwner(User loginUser) {
-        return writer.equals(loginUser);
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
-    public DeleteHistory delete(User loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사용자가 작성한 답변을 삭제할 수 없습니다.");
-        }
-
+    public DeleteHistory delete(User loginUser) {
+        verifyAuthorizedOwner(loginUser);
+        
         this.deleted = true;
 
         return new DeleteHistory(ContentType.ANSWER, getId(), loginUser, LocalDateTime.now());
@@ -85,14 +68,8 @@ public class Answer extends AbstractEntity implements UrlGeneratable {
         return String.format("%s/answers/%d", question.generateUrl(), getId());
     }
 
-    public void deletedBy(User loginUser) {
-        if (!isOwner(loginUser)) {
-            throw new UnAuthorizedException();
-        }
-    }
-
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return super.toString() + " Answer [id=" + getId() + ", contents=" + contents + "]";
     }
 }
