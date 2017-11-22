@@ -13,23 +13,23 @@ import net.slipp.security.LoginUserHandlerMethodArgumentResolver;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
-	@Bean
-	public BasicAuthInterceptor basicAuthInterceptor() {
-		return new BasicAuthInterceptor();
-	}
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(basicAuthInterceptor());
-	}
-	
-	@Bean
-	public LoginUserHandlerMethodArgumentResolver loginUserArgumentResolver() {
-		return new LoginUserHandlerMethodArgumentResolver();
-	}
-	
-	@Override
-	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		argumentResolvers.add(loginUserArgumentResolver());
-	}
+    @Bean
+    public BasicAuthInterceptor basicAuthInterceptor() {
+        return new BasicAuthInterceptor();
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(basicAuthInterceptor());
+    }
+
+    @Bean
+    public LoginUserHandlerMethodArgumentResolver loginUserArgumentResolver() {
+        return new LoginUserHandlerMethodArgumentResolver();
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(loginUserArgumentResolver());
+    }
 }

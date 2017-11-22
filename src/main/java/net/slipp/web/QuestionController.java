@@ -16,21 +16,21 @@ import net.slipp.security.LoginUser;
 @Controller
 @RequestMapping("/questions")
 public class QuestionController {
-	private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
+    private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
 
-	@Autowired
-	private QuestionRepository questionRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
-	@GetMapping("/form")
-	public String form(@LoginUser User loginUser) {
-		return "/qna/form";
-	}
-	
-	@PostMapping("")
-	public String create(@LoginUser User loginUser, Question question) {
-		question.writeBy(loginUser);
-		log.debug("question : {}", question);
-		questionRepository.save(question);
-		return "redirect:/";
-	}
+    @GetMapping("/form")
+    public String form(@LoginUser User loginUser) {
+        return "/qna/form";
+    }
+
+    @PostMapping("")
+    public String create(@LoginUser User loginUser, Question question) {
+        question.writeBy(loginUser);
+        log.debug("question : {}", question);
+        questionRepository.save(question);
+        return "redirect:/";
+    }
 }
