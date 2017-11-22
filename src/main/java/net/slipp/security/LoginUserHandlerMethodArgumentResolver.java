@@ -18,7 +18,7 @@ public class LoginUserHandlerMethodArgumentResolver implements HandlerMethodArgu
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-    	User user = HttpSessionUtils.getUserFromSession(webRequest);
+        User user = HttpSessionUtils.getUserFromSession(webRequest);
         if (!user.isGuestUser()) {
             return user;
         }

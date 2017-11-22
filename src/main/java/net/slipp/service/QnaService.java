@@ -16,45 +16,45 @@ import net.slipp.domain.User;
 
 @Service("qnaService")
 public class QnaService {
-	private static final Logger log = LoggerFactory.getLogger(QnaService.class);
-	
-	@Resource(name = "questionRepository")
-	private QuestionRepository questionRepository;
-	
-	@Resource(name = "answerRepository")
-	private AnswerRepository answerRepository;
+    private static final Logger log = LoggerFactory.getLogger(QnaService.class);
 
-	public void create(User loginUser, Question question) {
-		question.writeBy(loginUser);
-		log.debug("question : {}", question);
-		questionRepository.save(question);
-	}
+    @Resource(name = "questionRepository")
+    private QuestionRepository questionRepository;
 
-	public Question findById(long id) {
-		return questionRepository.findOne(id);
-	}
+    @Resource(name = "answerRepository")
+    private AnswerRepository answerRepository;
 
-	public Question update(User loginUser, long id, Question updatedQuestion) {
-		Question question = questionRepository.findOne(id);
-		question.update(loginUser, updatedQuestion);
-		return questionRepository.save(question);
-	}
-	
-	public List<Question> findAll() {
-		return questionRepository.findAll();
-	}
+    public void create(User loginUser, Question question) {
+        question.writeBy(loginUser);
+        log.debug("question : {}", question);
+        questionRepository.save(question);
+    }
 
-	public Question addAnswer(User loginUser, long questionId, String contents) {
-		Question question = questionRepository.findOne(questionId);
-		Answer answer = new Answer(loginUser, contents);
-		question.addAnswer(answer);
-		return questionRepository.save(question);
-	}
+    public Question findById(long id) {
+        return questionRepository.findOne(id);
+    }
 
-	public Answer deleteAnswer(User loginUser, long id) {
-		Answer answer = answerRepository.findOne(id);
-		answer.deletedBy(loginUser);
-		answerRepository.delete(answer);
-		return answer;
-	}
+    public Question update(User loginUser, long id, Question updatedQuestion) {
+        Question question = questionRepository.findOne(id);
+        question.update(loginUser, updatedQuestion);
+        return questionRepository.save(question);
+    }
+
+    public List<Question> findAll() {
+        return questionRepository.findAll();
+    }
+
+    public Question addAnswer(User loginUser, long questionId, String contents) {
+        Question question = questionRepository.findOne(questionId);
+        Answer answer = new Answer(loginUser, contents);
+        question.addAnswer(answer);
+        return questionRepository.save(question);
+    }
+
+    public Answer deleteAnswer(User loginUser, long id) {
+        Answer answer = answerRepository.findOne(id);
+        answer.deletedBy(loginUser);
+        answerRepository.delete(answer);
+        return answer;
+    }
 }

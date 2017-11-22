@@ -10,11 +10,11 @@ import javax.persistence.OrderBy;
 
 @Embeddable
 public class Answers {
-    @OneToMany(mappedBy="question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     private List<Answer> answers = new ArrayList<>();
 
     public void add(Answer answer) {
-        answers.add(answer);      
+        answers.add(answer);
     }
 }

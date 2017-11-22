@@ -21,22 +21,22 @@ import net.slipp.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Resource(name = "userService")
     private UserService userService;
-    
+
     @GetMapping("/form")
     public String form() {
         return "/user/form";
     }
-    
+
     @PostMapping("")
     public String create(User user) {
         userService.add(user);
         return "redirect:/users";
     }
-    
+
     @GetMapping("")
     public String list(Model model) {
         List<User> users = userService.findAll();
@@ -44,13 +44,13 @@ public class UserController {
         model.addAttribute("users", users);
         return "/user/list";
     }
-    
+
     @GetMapping("/{id}/form")
     public String updateForm(@LoginUser User loginUser, @PathVariable long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "/user/updateForm";
     }
-    
+
     @PutMapping("/{id}")
     public String update(@LoginUser User loginUser, @PathVariable long id, User target) {
         userService.update(loginUser, id, target);

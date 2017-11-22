@@ -10,12 +10,12 @@ import net.slipp.service.QnaService;
 
 @Controller
 public class HomeController {
-	@Resource(name = "qnaService")
-	private QnaService qnaService;
-	
-	@GetMapping("/")
-	public String home(Model model) {
-		model.addAttribute("questions", qnaService.findAll());
-		return "home";
-	}
+    @Resource(name = "qnaService")
+    private QnaService qnaService;
+
+    @GetMapping("/")
+    public String home(Model model) {
+        model.addAttribute("questions", qnaService.findAll());
+        return "home";
+    }
 }
