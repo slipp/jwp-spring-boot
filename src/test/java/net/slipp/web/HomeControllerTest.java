@@ -18,15 +18,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class HomeControllerTest {
-	private static final Logger log = LoggerFactory.getLogger(HomeControllerTest.class);
+    private static final Logger log = LoggerFactory.getLogger(HomeControllerTest.class);
 
-	@Autowired private TestRestTemplate template;
+    @Autowired
+    private TestRestTemplate template;
 
-	@Test
-	public void home() {
-		ResponseEntity<String> response = template.getForEntity("/", String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		log.debug("body : {}", response.getBody());
-	}
+    @Test
+    public void home() {
+        ResponseEntity<String> response = template.getForEntity("/", String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        log.debug("body : {}", response.getBody());
+    }
 
 }
