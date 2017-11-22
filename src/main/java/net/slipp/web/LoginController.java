@@ -12,22 +12,22 @@ import net.slipp.service.UserService;
 
 @Controller
 public class LoginController {
-	@Autowired
-	private UserService userService;
-	
-	@GetMapping("/login")
-	public String form() {
-		return "/user/login";
-	}
-	
-	@PostMapping("/login")
-	public String login(String userId, String password, HttpSession session) {
-		try {
-			User user = userService.login(userId, password);
-			session.setAttribute("loginedUser", user);
-			return "redirect:/";		
-		} catch (IllegalStateException e) {
-			return "/user/login_failed";
-		}
-	}
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/login")
+    public String form() {
+        return "/user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession session) {
+        try {
+            User user = userService.login(userId, password);
+            session.setAttribute("loginedUser", user);
+            return "redirect:/";
+        } catch (IllegalStateException e) {
+            return "/user/login_failed";
+        }
+    }
 }
