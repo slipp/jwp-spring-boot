@@ -11,7 +11,7 @@ import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
-	@Override
+    @Override
     public Date convertToDatabaseColumn(LocalDate date) {
         Instant instant = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);

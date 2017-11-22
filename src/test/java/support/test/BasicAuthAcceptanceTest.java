@@ -8,20 +8,20 @@ import net.slipp.domain.User;
 import net.slipp.domain.UserRepository;
 
 public abstract class BasicAuthAcceptanceTest extends AcceptanceTest {
-	protected TestRestTemplate basicAuthTemplate;
+    protected TestRestTemplate basicAuthTemplate;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	protected User loginUser;
-	
-	@Before
-	public void setup() {
-		loginUser = userRepository.findByUserId("javajigi").get();
-		basicAuthTemplate = template.withBasicAuth(loginUser.getUserId(), loginUser.getPassword());
-	}
-	
-	protected User findByUserId(String userId) {
-		return userRepository.findByUserId(userId).get();
-	}
+    protected User loginUser;
+
+    @Before
+    public void setup() {
+        loginUser = userRepository.findByUserId("javajigi").get();
+        basicAuthTemplate = template.withBasicAuth(loginUser.getUserId(), loginUser.getPassword());
+    }
+
+    protected User findByUserId(String userId) {
+        return userRepository.findByUserId(userId).get();
+    }
 }

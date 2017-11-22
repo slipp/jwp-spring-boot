@@ -15,12 +15,12 @@ import net.slipp.service.QnaService;
 @Controller
 @RequestMapping("/questions/{questionId}/answers")
 public class AnswerController {
-	@Resource(name = "qnaService")
-	private QnaService qnaService;
-	
-	@PostMapping("")
-	public String create(@LoginUser User loginUser, @PathVariable long questionId, String contents) {
-		Question question = qnaService.addAnswer(loginUser, questionId, contents);
-		return "redirect:" + question.generateUrl();
-	}
+    @Resource(name = "qnaService")
+    private QnaService qnaService;
+
+    @PostMapping("")
+    public String create(@LoginUser User loginUser, @PathVariable long questionId, String contents) {
+        Question question = qnaService.addAnswer(loginUser, questionId, contents);
+        return "redirect:" + question.generateUrl();
+    }
 }

@@ -15,19 +15,19 @@ import net.slipp.web.UserController;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JwpSpringBootApplication.class)
 public class LoggingAspectTest {
-	@Autowired
-	private UserController userController;
-	
-	@Autowired
-	private LoginController loginController;
-	
-	@Test
-	public void logging() {
-		User user = new User("aspectuser", "password", "name2", "javajigi@slipp.net2");
-		userController.create(user);
-		
-		MockHttpSession session = new MockHttpSession();
-		loginController.login(user.getUserId(), user.getPassword(), session);
-	}
+    @Autowired
+    private UserController userController;
+
+    @Autowired
+    private LoginController loginController;
+
+    @Test
+    public void logging() {
+        User user = new User("aspectuser", "password", "name2", "javajigi@slipp.net2");
+        userController.create(user);
+
+        MockHttpSession session = new MockHttpSession();
+        loginController.login(user.getUserId(), user.getPassword(), session);
+    }
 
 }
