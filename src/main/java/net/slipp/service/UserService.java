@@ -11,20 +11,20 @@ import net.slipp.domain.UserRepository;
 
 @Service
 public class UserService {
-	@Autowired
-	private UserRepository userRepository;
-	
-	public User login(String userId, String password) throws UnAuthenticationException {
-		Optional<User> maybeUser = userRepository.findByUserId(userId);
-		if (!maybeUser.isPresent()) {
-			throw new UnAuthenticationException();
-		}
-		
-		User user = maybeUser.get();
-		if (!user.matchPassword(password)) {
-			throw new UnAuthenticationException();
-		}
-		
-		return user;
-	}
+    @Autowired
+    private UserRepository userRepository;
+
+    public User login(String userId, String password) throws UnAuthenticationException {
+        Optional<User> maybeUser = userRepository.findByUserId(userId);
+        if (!maybeUser.isPresent()) {
+            throw new UnAuthenticationException();
+        }
+
+        User user = maybeUser.get();
+        if (!user.matchPassword(password)) {
+            throw new UnAuthenticationException();
+        }
+
+        return user;
+    }
 }

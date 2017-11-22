@@ -21,80 +21,75 @@ import support.test.BasicAuthAcceptanceTest;
 import support.test.HtmlFormDataBuilder;
 
 public class UserControllerTest extends BasicAuthAcceptanceTest {
-	private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
+    private static final Logger log = LoggerFactory.getLogger(UserControllerTest.class);
 
-	@Autowired private UserRepository userRepository;
-	
-	@Test
-	public void createForm() throws Exception {
-		ResponseEntity<String> response = template.getForEntity("/users/form", String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		log.debug("body : {}", response.getBody());
-	}
-	
-	@Test
-	public void create() throws Exception {
-		String userId = "firstuser";
-        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
-				.urlEncodedForm()
-		        .addParameter("userId", userId)
-				.addParameter("password", "pass")
-				.addParameter("name", "재성")
-				.addParameter("email", "javajigi@slipp.net")
-				.build();
+    @Autowired
+    private UserRepository userRepository;
 
-		ResponseEntity<String> response = template.postForEntity("/users", request, String.class);
-        
-		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-		Optional<User> maybeUser = userRepository.findByUserId(userId);
-		assertTrue(maybeUser.isPresent());
-		assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
-		userRepository.delete(maybeUser.get());
-	}
-	
-	@Test
-	public void list() throws Exception {
-		ResponseEntity<String> response = template.getForEntity("/users", String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		log.debug("body : {}", response.getBody());
-		assertThat(response.getBody().contains(loginUser.getEmail()), is(true));
-	}
-	
-	@Test
-	public void updateForm_no_login() throws Exception {
-		ResponseEntity<String> response = template.getForEntity(String.format("/users/%d/form", loginUser.getId()), String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-	}
-	
-	@Test
-	public void updateForm_login() throws Exception {
-		ResponseEntity<String> response = basicAuthTemplate.getForEntity(String.format("/users/%d/form", loginUser.getId()), String.class);
-		assertThat(response.getStatusCode(), is(HttpStatus.OK));
-		assertThat(response.getBody().contains(loginUser.getEmail()), is(true));
-	}
-	
-	@Test
-	public void update_no_login() throws Exception {
-		ResponseEntity<String> response = update(template);
-		assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-	}
-	
-	private ResponseEntity<String> update(TestRestTemplate template) throws Exception {
-		HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
-				.urlEncodedForm()
-		        .addParameter("_method", "put")
-				.addParameter("password", "pass2")
-				.addParameter("name", "재성2")
-				.addParameter("email", "javajigi@slipp.net")
-				.build();
-		
-		return template.postForEntity(String.format("/users/%d", loginUser.getId()), request, String.class);
-	}
-	
-	@Test
-	public void update() throws Exception {
-		ResponseEntity<String> response = update(basicAuthTemplate);
-		assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
-		assertTrue(response.getHeaders().getLocation().getPath().startsWith("/users"));
-	}
-}	
+    @Test
+    public void createForm() throws Exception {
+        ResponseEntity<String> response = template.getForEntity("/users/form", String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        log.debug("body : {}", response.getBody());
+    }
+
+    @Test
+    public void create() throws Exception {
+        String userId = "firstuser";
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
+                .addParameter("userId", userId).addParameter("password", "pass").addParameter("name", "재성")
+                .addParameter("email", "javajigi@slipp.net").build();
+
+        ResponseEntity<String> response = template.postForEntity("/users", request, String.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
+        Optional<User> maybeUser = userRepository.findByUserId(userId);
+        assertTrue(maybeUser.isPresent());
+        assertThat(response.getHeaders().getLocation().getPath(), is("/users"));
+        userRepository.delete(maybeUser.get());
+    }
+
+    @Test
+    public void list() throws Exception {
+        ResponseEntity<String> response = template.getForEntity("/users", String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        log.debug("body : {}", response.getBody());
+        assertThat(response.getBody().contains(loginUser.getEmail()), is(true));
+    }
+
+    @Test
+    public void updateForm_no_login() throws Exception {
+        ResponseEntity<String> response = template.getForEntity(String.format("/users/%d/form", loginUser.getId()),
+                String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
+    }
+
+    @Test
+    public void updateForm_login() throws Exception {
+        ResponseEntity<String> response = basicAuthTemplate
+                .getForEntity(String.format("/users/%d/form", loginUser.getId()), String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().contains(loginUser.getEmail()), is(true));
+    }
+
+    @Test
+    public void update_no_login() throws Exception {
+        ResponseEntity<String> response = update(template);
+        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
+    }
+
+    private ResponseEntity<String> update(TestRestTemplate template) throws Exception {
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
+                .addParameter("_method", "put").addParameter("password", "pass2").addParameter("name", "재성2")
+                .addParameter("email", "javajigi@slipp.net").build();
+
+        return template.postForEntity(String.format("/users/%d", loginUser.getId()), request, String.class);
+    }
+
+    @Test
+    public void update() throws Exception {
+        ResponseEntity<String> response = update(basicAuthTemplate);
+        assertThat(response.getStatusCode(), is(HttpStatus.FOUND));
+        assertTrue(response.getHeaders().getLocation().getPath().startsWith("/users"));
+    }
+}
