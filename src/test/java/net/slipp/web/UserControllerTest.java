@@ -42,8 +42,11 @@ public class UserControllerTest extends AbstractAcceptanceTest {
     @Test
     public void create() throws Exception {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
-                .addParameter("userId", "javajigi").addParameter("password", "pass").addParameter("name", "재성")
-                .addParameter("email", "javajigi@slipp.net").build();
+                .addParameter("userId", "javajigi")
+                .addParameter("password", "pass")
+                .addParameter("name", "재성")
+                .addParameter("email", "javajigi@slipp.net")
+                .build();
 
         ResponseEntity<String> response = template.postForEntity("/users", request, String.class);
 
@@ -71,8 +74,11 @@ public class UserControllerTest extends AbstractAcceptanceTest {
     @Test
     public void update() throws Exception {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
-                .addParameter("_method", "put").addParameter("password", "pass2").addParameter("name", "재성2")
-                .addParameter("email", "javajigi@slipp.net").build();
+                .addParameter("_method", "put")
+                .addParameter("password", "pass2")
+                .addParameter("name", "재성2")
+                .addParameter("email", "javajigi@slipp.net")
+                .build();
 
         ResponseEntity<String> response = template.postForEntity(String.format("/users/%d", testUser.getId()), request,
                 String.class);
